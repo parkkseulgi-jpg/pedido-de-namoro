@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Um Coração para Você</title>
+<meta name="description" content="Uma pequena animação de coração para alguém especial.">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+  background:radial-gradient(circle at center,#260015 0%,#12000b 45%,#050005 100%);
+  color:#fff;font-family:Arial,sans-serif;display:flex;align-items:center;
+  justify-content:center;position:relative;user-select:none;
+}
+#mute-button{
+  position:fixed;right:18px;top:18px;width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);
+  display:grid;place-items:center;font-size:22px;z-index:10;cursor:pointer;
+  backdrop-filter:blur(5px)
+}
+.container{position:relative;width:min(90vw,700px);height:min(80vh,620px);display:flex;align-items:center;justify-content:center}
+.love{position:relative;width:230px;height:210px;animation:pulse 1.2s infinite}
+.block{position:absolute;inset:0;transform:rotate(-45deg);animation:float 3s ease-in-out infinite}
+.block:before,.block:after,.div1,.div2,.div3,.div4{content:"";position:absolute;background:#ff176f}
+.block:before{width:155px;height:155px;left:37px;top:37px;box-shadow:0 0 45px #ff176f,0 0 100px rgba(255,23,111,.5)}
+.block:after{width:155px;height:155px;left:0;top:37px;border-radius:50%}
+.div1{width:155px;height:155px;left:74px;top:0;border-radius:50%}
+.div2,.div3,.div4{display:none}
+.heart-glow{position:absolute;inset:20%;border-radius:50%;background:rgba(255,0,100,.18);filter:blur(40px);animation:glow 1.2s infinite}
+.message{position:absolute;bottom:8%;left:0;right:0;text-align:center;font-size:clamp(20px,4vw,32px);font-weight:bold;opacity:0;animation:show 2s 1.2s forwards}
+.sub{font-size:14px;font-weight:normal;opacity:.75;margin-top:8px}
+.petal{position:absolute;top:-30px;font-size:18px;animation:fall linear forwards;pointer-events:none}
+@keyframes pulse{50%{transform:scale(1.08)}}
+@keyframes float{50%{transform:rotate(-45deg) translateY(-10px)}}
+@keyframes glow{50%{transform:scale(1.2);opacity:.7}}
+@keyframes show{to{opacity:1}}
+@keyframes fall{to{transform:translate3d(var(--x),110vh,0) rotate(540deg);opacity:0}}
+</style>
+</head>
+<body>
+<div id="mute-button" title="Ativar/desativar som">🔊</div>
+<div id="petal-container"></div>
+<div class="container">
+  <div class="heart-glow"></div>
+  <div class="love">
+    <div class="block">
+      <div class="div1"></div><div class="div2"></div><div class="div3"></div><div class="div4"></div>
+    </div>
+  </div>
+  <div class="message">💗 Parabéns! 💗<div class="sub">Agora começa uma nova história.</div></div>
+</div>
+<script>
+const petals=document.getElementById('petal-container');
+function makePetal(){
+  const p=document.createElement('div');
+  p.className='petal';
+  p.textContent=['🌸','💗','💕','✨'][Math.floor(Math.random()*4)];
+  p.style.left=Math.random()*100+'vw';
+  p.style.setProperty('--x',(Math.random()*240-120)+'px');
+  p.style.animationDuration=(4+Math.random()*5)+'s';
+  petals.appendChild(p);
+  setTimeout(()=>p.remove(),10000);
+}
+setInterval(makePetal,350);
+for(let i=0;i<12;i++) setTimeout(makePetal,i*180);
+
+let muted=false;
+const button=document.getElementById('mute-button');
+button.addEventListener('click',()=>{
+  muted=!muted;
+  button.textContent=muted?'🔇':'🔊';
+});
+</script>
+</body>
+</html>
